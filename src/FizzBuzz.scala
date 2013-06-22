@@ -6,6 +6,7 @@ object FizzBuzz {
     for (i <- 1 to n) {
       i match {
         case _ if i % 3 == 0 => results += "Fizz"
+        case _ if i % 5 == 0 => results += "Buzz"
         case _ => results += i.toString
       }
     }

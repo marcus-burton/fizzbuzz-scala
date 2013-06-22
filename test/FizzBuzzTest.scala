@@ -6,6 +6,7 @@ class FizzBuzzTest extends FlatSpec with ShouldMatchers {
   behavior of "Game of FizzBuzz"
 
   val testGameLength = 1000
+  val game = FizzBuzz(testGameLength)
 
   it should "play up to a specified limit" in {
     val gameLimit = randomGameLengthUpTo(2)
@@ -13,7 +14,6 @@ class FizzBuzzTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "say number if not divisible by 3 or 5" in {
-    val game = FizzBuzz(testGameLength)
     for (i <- 1 to testGameLength filter (!divisibleBy3(_)) filter (!divisibleBy5(_)))
       withClue(s"For round at $i") {
         game(i - 1) should be(i.toString)
@@ -21,10 +21,16 @@ class FizzBuzzTest extends FlatSpec with ShouldMatchers {
   }
 
   it should "say Fizz if divisible by 3 and not 5" in {
-    val game = FizzBuzz(testGameLength)
     for (i <- 1 to testGameLength filter (divisibleBy3(_)) filter (!divisibleBy5(_)))
       withClue(s"For round at $i") {
         game(i - 1) should be("Fizz")
+      }
+  }
+
+  it should "say Buzz if divisible by 5 and not 3" in {
+    for (i <- 1 to testGameLength filter (!divisibleBy3(_)) filter (divisibleBy5(_)))
+      withClue(s"For round at $i") {
+        game(i - 1) should be("Buzz")
       }
   }
 
