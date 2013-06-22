@@ -34,6 +34,13 @@ class FizzBuzzTest extends FlatSpec with ShouldMatchers {
       }
   }
 
+  it should "say FizzBuzz if divisible by 3 and 5" in {
+    for (i <- 1 to testGameLength filter (divisibleBy3(_)) filter (divisibleBy5(_)))
+      withClue(s"For round at $i") {
+        game(i - 1) should be("FizzBuzz")
+      }
+  }
+
   private def divisibleBy3(n: Int): Boolean = n % 3 == 0
 
   private def divisibleBy5(n: Int): Boolean = n % 5 == 0
