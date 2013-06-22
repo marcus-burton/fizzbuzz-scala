@@ -15,12 +15,22 @@ class FizzBuzzTest extends FlatSpec with ShouldMatchers {
   it should "say number if not divisible by 3 or 5" in {
     val game = FizzBuzz(testGameLength)
     for (i <- 1 to testGameLength filter (!divisibleBy3(_)) filter (!divisibleBy5(_)))
-      game(i - 1) should be(i.toString)
+      withClue(s"For round at $i") {
+        game(i - 1) should be(i.toString)
+      }
   }
 
-  def divisibleBy3(n: Int): Boolean = n % 3 == 0
+  it should "say Fizz if divisible by 3 and not 5" in {
+    val game = FizzBuzz(testGameLength)
+    for (i <- 1 to testGameLength filter (divisibleBy3(_)) filter (!divisibleBy5(_)))
+      withClue(s"For round at $i") {
+        game(i - 1) should be("Fizz")
+      }
+  }
 
-  def divisibleBy5(n: Int): Boolean = n % 5 == 0
+  private def divisibleBy3(n: Int): Boolean = n % 3 == 0
 
-  def randomGameLengthUpTo(n: Int): Int = nextInt(n)
+  private def divisibleBy5(n: Int): Boolean = n % 5 == 0
+
+  private def randomGameLengthUpTo(n: Int): Int = nextInt(n)
 }
