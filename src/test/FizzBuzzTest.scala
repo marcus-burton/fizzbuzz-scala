@@ -18,29 +18,28 @@ class FizzBuzzTest extends FlatSpec with ShouldMatchers {
   val testGameLength = 1000
   val gameResults = FizzBuzz(testGameLength)
 
-  it should "say number if not divisible by 3 or 5" in {
-    for (i <- 1 to testGameLength filter (!divisibleBy3(_)) filter (!divisibleBy5(_)))
-      assertSaid(gameResults, i, i.toString)
+  it should "say actual number if not divisible by 3 or 5" in {
+    assertSaid(!divisibleBy3(_), !divisibleBy5(_), "Number")
   }
 
   it should "say Fizz if divisible by 3 and not 5" in {
-    for (i <- 1 to testGameLength filter (divisibleBy3(_)) filter (!divisibleBy5(_)))
-      assertSaid(gameResults, i, "Fizz")
+    assertSaid(divisibleBy3(_), !divisibleBy5(_), "Fizz")
   }
 
   it should "say Buzz if divisible by 5 and not 3" in {
-    for (i <- 1 to testGameLength filter (!divisibleBy3(_)) filter (divisibleBy5(_)))
-      assertSaid(gameResults, i, "Buzz")
+    assertSaid(!divisibleBy3(_), divisibleBy5(_), "Buzz")
   }
 
   it should "say FizzBuzz if divisible by 3 and 5" in {
-    for (i <- 1 to testGameLength filter (divisibleBy3(_)) filter (divisibleBy5(_)))
-      assertSaid(gameResults, i, "FizzBuzz")
+    assertSaid(divisibleBy3(_), divisibleBy5(_), "FizzBuzz")
   }
 
-  private def assertSaid(gameResults: List[String], number: Int, expectedToSay: String) {
-    withClue(s"Expected to say $expectedToSay at $number") {
-      gameResults(number - 1) should be(expectedToSay)
+  private def assertSaid(divisibleBy3Filter: (Int) => Boolean, divisibleBy5Filter: (Int) => Boolean, expectedToSay: String) {
+    for (i <- 1 to testGameLength filter (divisibleBy3Filter(_)) filter (divisibleBy5Filter(_))) {
+      val expected = if (expectedToSay == "Number") i.toString else expectedToSay
+      withClue(s"Expected to say $expected at $i") {
+        gameResults(i - 1) should be(expected)
+      }
     }
   }
 
